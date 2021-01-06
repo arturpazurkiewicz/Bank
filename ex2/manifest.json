@@ -1,0 +1,21 @@
+{
+  "name": "Bank Script",
+  "version": "1.0",
+  "description": "Changes number of bank account",
+  "manifest_version": 2,
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://127.0.0.1:8000/*",
+        "http://127.0.0.1:8000/*/*"
+      ],
+      "js": [
+        "jquery-2.0.3.js",
+        "script.js"
+      ]
+    }
+  ]
+}

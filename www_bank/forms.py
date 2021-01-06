@@ -2,8 +2,9 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
+from django.forms.utils import ErrorList
 
-from www_bank.models import TransferHistory
+from www_bank.models import TransferHistory, Account
 
 
 class SignUpForm(UserCreationForm):
@@ -27,6 +28,19 @@ class SignUpForm(UserCreationForm):
 
 
 class TransferForm(ModelForm):
+
+    def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,
+                 initial=None, error_class=ErrorList, label_suffix=None,
+                 empty_permitted=False, instance=None,
+                 use_required_attribute=None, renderer=None, user_id=None):
+        super().__init__(data, files, auto_id, prefix, initial, error_class,
+                         label_suffix, empty_permitted, instance,
+                         use_required_attribute, renderer)
+        self.fields['account_id'].queryset = Account.objects.filter(
+            user_id=user_id)
+
+    account_id = forms.ModelChoiceField(queryset=None, required=True,
+                                        help_text='Select account')
     to_account_number = forms.CharField(required=True,
                                         help_text='Receiver account number',
                                         widget=forms.TextInput(
@@ -45,4 +59,4 @@ class TransferForm(ModelForm):
 
     class Meta:
         model = TransferHistory
-        fields = ('to_account_number', 'description', 'value')
+        fields = ('account_id', 'to_account_number', 'description', 'value')

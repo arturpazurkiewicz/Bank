@@ -40,7 +40,8 @@ def get_account(request, account_id):
                                                 is_accepted=False)
 
     return render(request, 'account.html',
-                  {'account': account, 'history': history, 'unaccepted': unaccepted})
+                  {'account': account, 'history': history,
+                   'unaccepted': unaccepted})
 
 
 @login_required(login_url='login')
@@ -48,37 +49,34 @@ def create_transaction(request):
     user = request.user
     data = {'accounts': Account.objects.filter(user_id=user)}
     if request.method == 'POST':
-        form = TransferForm(request.POST)
+        form = TransferForm(request.POST, user_id=user)
         if form.is_valid():
             try:
-                account_id = Account.objects.get(
-                    id=request.POST.get('account_id'))
-                tr = form.save(commit=False)
-                tr.account_id = account_id
-                tr.save()
+                tr = form.save()
                 return redirect('/transaction/' + str(tr.id) + '/')
             except Exception as e:
                 data['error'] = e
             # TransferHistory.send_money(account_id, tr.to_account_number,
             #                            tr.description, tr.value)
     else:
-        form = TransferForm()
+        form = TransferForm(user_id=user)
     data['form'] = form
     return render(request, 'create_transaction.html', data)
 
 
-def _accepted_transaction(request, transaction):
+def _accepted_transaction(request, body):
     return render(request, 'transaction.html',
-                  {'transaction': transaction})
+                  body)
 
 
-def _unaccepted_transaction(request, transaction):
+def _unaccepted_transaction(request, body):
     return render(request, 'unaccepted_transaction.html',
-                  {'transaction': transaction})
+                  body)
 
 
 @login_required(login_url='login')
 def show_transaction(request, transaction_id):
+    body = {}
     try:
         transaction = TransferHistory.objects.get(id=transaction_id,
                                                   account_id__user_id=request.user)
@@ -86,11 +84,14 @@ def show_transaction(request, transaction_id):
         return redirect('/')
     if request.method == 'POST':
         if request.POST.get('is_ok') == 'Accept':
-            transaction.send_money()
+            try:
+                transaction.send_money()
+            except Exception as e:
+                body['error'] = e
         elif request.POST.get('is_ok') == 'Cancel':
             transaction.delete()
             return redirect('/')
-
+        body['transaction'] = transaction
     if transaction.is_accepted:
-        return _accepted_transaction(request, transaction)
-    return _unaccepted_transaction(request, transaction)
+        return _accepted_transaction(request, body)
+    return _unaccepted_transaction(request, body)

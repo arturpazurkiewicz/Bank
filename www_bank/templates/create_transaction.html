@@ -17,13 +17,6 @@
                     <div class="form">
                         <form method="post">
                             {% csrf_token %}
-                            <label>
-                                <select style="width:300px" name="account_id">
-                                    {% for i in accounts %}
-                                        <option value="{{ i.id }}">{{ i }}</option>
-                                    {% endfor %}
-                                </select>
-                            </label>
                             {% for field in form %}
                                 <div class="d-flex justify-content-center">
                                     <p>

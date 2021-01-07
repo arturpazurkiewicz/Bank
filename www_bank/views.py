@@ -91,7 +91,7 @@ def show_transaction(request, transaction_id):
         elif request.POST.get('is_ok') == 'Cancel':
             transaction.delete()
             return redirect('/')
-        body['transaction'] = transaction
+    body['transaction'] = transaction
     if transaction.is_accepted:
         return _accepted_transaction(request, body)
     return _unaccepted_transaction(request, body)

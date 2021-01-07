@@ -3,7 +3,7 @@
     <br>
 
     <div class="row">
-        <div class="col-md">
+        <div class="col-md account-col">
             <div class="card card-body" style="font-weight: lighter">
                 <b>Account name: {{ account.name }}</b>
                 <b>Balance: {{ account.account_balance }}</b>
@@ -27,7 +27,7 @@
                         {% for i in unaccepted %}
                             <tr>
                                 <td><a href="/transaction/{{ i.id }}/"
-                                       class="row-link">More</a></td>
+                                       class="row-link links">More</a></td>
                                 <td class="account_number_class">{{ i.from_account_number }}</td>
                                 <td class="account_number_class">{{ i.to_account_number }}</td>
                                 <td>{{ i.value }}</td>
@@ -55,7 +55,7 @@
                     {% for i in history %}
                         <tr>
                             <td><a href="/transaction/{{ i.id }}/"
-                                   class="row-link">More</a></td>
+                                   class="row-link links">More</a></td>
                             <td class="account_number_class">{{ i.from_account_number }}</td>
                             <td class="account_number_class">{{ i.to_account_number }}</td>
                             <td>{{ i.value }}</td>

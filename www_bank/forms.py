@@ -48,7 +48,7 @@ class TransferForm(ModelForm):
                                                    'autocomplete': 'off',
                                                    'pattern': '[0-9]{26}',
                                                    'placeholder': 'Receiver account number',
-                                                   'size': 26}))
+                                                   'size': 30}))
 
     description = forms.CharField(max_length=256, help_text="Description",
                                   required=False, widget=forms.TextInput

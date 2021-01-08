@@ -1,4 +1,6 @@
 # Create your views here.
+from math import floor
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -53,7 +55,7 @@ def create_transaction(request):
         if form.is_valid():
             try:
                 tr = form.save(commit=False)
-                tr.value = tr.value // 0.1 / 100
+                tr.value = floor(tr.value * 100) / 100
                 tr.save()
                 return redirect('/transaction/' + str(tr.id) + '/')
             except Exception as e:
@@ -90,7 +92,7 @@ def show_transaction(request, transaction_id):
                 transaction.send_money()
             except Exception as e:
                 body['error'] = e
-        elif request.POST.get('is_ok') == 'Cancel':
+        elif request.POST.get('is_ok') == 'Delete':
             transaction.delete()
             return redirect('/')
     body['transaction'] = transaction

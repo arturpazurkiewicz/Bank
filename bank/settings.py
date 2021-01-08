@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'www_bank'
+    'www_bank',
+    'argon2'
 ]
 
 MIDDLEWARE = [

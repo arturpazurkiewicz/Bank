@@ -52,7 +52,9 @@ def create_transaction(request):
         form = TransferForm(request.POST, user_id=user)
         if form.is_valid():
             try:
-                tr = form.save()
+                tr = form.save(commit=False)
+                tr.value = tr.value // 0.1 / 100
+                tr.save()
                 return redirect('/transaction/' + str(tr.id) + '/')
             except Exception as e:
                 data['error'] = e

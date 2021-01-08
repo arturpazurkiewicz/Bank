@@ -32,5 +32,4 @@ if (regex2.exec(window.location.href) !== null) {
             accounts[i].innerHTML = make_account()
         }
     }
-    document.getElementById('account_number').innerHTML = localStorage.getItem('last_account');
 }

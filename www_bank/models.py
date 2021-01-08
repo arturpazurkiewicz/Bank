@@ -64,7 +64,7 @@ class Account(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=128, default="Main account")
     account_balance = models.FloatField(default=0.0)
-    account_number = models.CharField(max_length=26, unique=True)
+    account_number = models.CharField(max_length=26, unique=True, blank=True)
 
     def __str__(self):
         return self.name + " : " + str(self.account_balance)

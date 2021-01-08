@@ -54,8 +54,8 @@ class TransferForm(ModelForm):
                                   required=False, widget=forms.TextInput
         (attrs={'placeholder': 'Description'}))
     value = forms.FloatField(help_text="Value", min_value=0.01,
-                             widget=forms.TextInput
-                             (attrs={'placeholder': 'Value'}))
+                             widget=forms.NumberInput
+                             (attrs={'placeholder': 'Value', 'step': '0.01'}))
 
     class Meta:
         model = TransferHistory
